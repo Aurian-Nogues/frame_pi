@@ -5,6 +5,9 @@ from blufi import BluFi, AbstractWiFiHandler
 from blufi.agent import AgentDisplayOnly, Agent, AgentNoDisplayNoKeyboard, install_agent
 from wifinm import WiFiHandlerNetworkManager
 
+import json
+
+
 DEVICE_NAME = "BLUFI_DEVICE"
 PAIRING_ENABLED = False #supported reliably only by iOS devices
 
@@ -17,6 +20,13 @@ def main(adapter_address):
     dev = BluFi(WiFiHandlerNetworkManager, adapter_address, DEVICE_NAME)
 
     def on_customdata(data):
+
+        decoded = data.decode('utf-8')
+        received = json.loads(decoded)
+        print(received)
+
+        response = 'This worked'.encode(encoding='UTF-8')
+        dev.send_custom_data(response)
         print('CUSTOM data received', data)
         dev.send_custom_data(b'xyz')
 
