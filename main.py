@@ -5,7 +5,7 @@ from blufi import BluFi, AbstractWiFiHandler
 from blufi.agent import AgentDisplayOnly, Agent, AgentNoDisplayNoKeyboard, install_agent
 from wifinm import WiFiHandlerNetworkManager
 
-import json
+from display.display_manager import CustomMessageProcessor
 
 # test
 DEVICE_NAME = "BLUFI_DEVICE"
@@ -21,14 +21,13 @@ def main(adapter_address):
 
     def on_customdata(data):
 
-        decoded = data.decode('utf-8')
-        received = json.loads(decoded)
-        print(received)
 
-        response = 'This worked'.encode(encoding='UTF-8')
-        dev.send_custom_data(response)
-        print('CUSTOM data received', data)
-        dev.send_custom_data(b'xyz')
+        messageProcessor = CustomMessageProcessor(data)
+        res = messageProcessor.process()
+        dev.send_custom_data(res)
+        # dev.send_custom_data(response)
+        # print('CUSTOM data received', data)
+        # dev.send_custom_data(b'xyz')
 
     dev.on_customdata = on_customdata
     # Publish peripheral and start event loop

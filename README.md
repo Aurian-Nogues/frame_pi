@@ -81,3 +81,10 @@ $ source ble-env/bin/activate
 (ble-env) $ pip3 install uptime
 (ble-env) $ sudo ble-env/bin/python3.7 main.py
 ```
+# DISPLAY
+
+$ pip3 install selenium
+go to chromium and chrome://version/ to check version
+Download right version from:
+https://sites.google.com/a/chromium.org/chromedriver/downloads
+Make sure it’s in your PATH, e. g., place it in /usr/bin or /usr/local/bin.
