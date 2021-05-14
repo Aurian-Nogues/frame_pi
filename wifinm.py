@@ -8,6 +8,7 @@ class WiFiHandlerNetworkManager(AbstractWiFiHandler):
     def __init__(self):
         AbstractWiFiHandler.__init__(self)
         self.c = NetworkManager.const
+        print('init wifi')
 
     @report_exception
     def InitiateScan(self):
