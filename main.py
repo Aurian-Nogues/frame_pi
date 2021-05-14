@@ -24,9 +24,9 @@ def main(adapter_address):
     # Publish peripheral and start event loop
     dev.publish()
 
-class MyAgent(AgentDisplayOnly): #device with Display capability (no Keyboard input possible)
-    def on_passkey(self, passkey):
-        print('Display passkey on the screen:', passkey)
+# class MyAgent(AgentDisplayOnly): #device with Display capability (no Keyboard input possible)
+#     def on_passkey(self, passkey):
+#         print('Display passkey on the screen:', passkey)
         
 if __name__ == '__main__':
     if os.geteuid() != 0:
