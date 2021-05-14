@@ -7,7 +7,7 @@ from wifinm import WiFiHandlerNetworkManager
 
 import json
 
-
+# test
 DEVICE_NAME = "BLUFI_DEVICE"
 PAIRING_ENABLED = False #supported reliably only by iOS devices
 
