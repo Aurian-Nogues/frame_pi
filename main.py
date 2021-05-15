@@ -4,8 +4,9 @@ from bluezero import adapter
 from blufi import BluFi, AbstractWiFiHandler
 from blufi.agent import AgentDisplayOnly, Agent, AgentNoDisplayNoKeyboard, install_agent
 from wifinm import WiFiHandlerNetworkManager
+import json
 
-from display.display_manager import CustomMessageProcessor
+from display.display_trigger import DisplayTrigger
 
 # test
 DEVICE_NAME = "BLUFI_DEVICE"
@@ -20,9 +21,14 @@ def main(adapter_address):
     dev = BluFi(WiFiHandlerNetworkManager, adapter_address, DEVICE_NAME)
 
     def on_customdata(data):
-        messageProcessor = CustomMessageProcessor(data)
-        res = messageProcessor.process()
-        dev.send_custom_data(res)
+        decoded = data.decode('utf-8')
+        message_dict = json.loads(decoded)
+        if message_dict['type'] == 'display_request':
+            url = message_dict['url']
+        trigger = DisplayTrigger()
+        trigger.trigger_display(url)
+        dev.send_custom_data(b'Success')
+
         # dev.send_custom_data(response)
         # print('CUSTOM data received', data)
         # dev.send_custom_data(b'xyz')
