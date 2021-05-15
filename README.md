@@ -83,17 +83,7 @@ $ source ble-env/bin/activate
 (ble-env) $ sudo ble-env/bin/python3.7 main.py
 ```
 # DISPLAY
-
-https://raspberrypi.stackexchange.com/questions/4941/can-i-run-selenium-webdriver-using-firefox-as-the-browser
-
+# chromium drivers recommended by selenium will not work on ARM chips. Use this command to install the right ARM drivers
+sudo apt install chromium-chromedriver
 $ pip3 install selenium
-go to chromium and chrome://version/ to check version
-Download right version from:
-https://launchpad.net/ubuntu/trusty/+package/chromium-chromedriver
-Select and arm driver (as I am writing this it is https://launchpad.net/~canonical-chromium-builds/+archive/ubuntu/stage/+build/14482955)
-
-Do not use the standard drivers from
-https://sites.google.com/a/chromium.org/chromedriver/downloads
-They are meant to be used for Intel and AMD chips, not ARM
-
 

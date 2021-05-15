@@ -1,8 +1,6 @@
 import subprocess
 import json
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options  
-import os  
 
 
 
@@ -15,31 +13,33 @@ class CustomMessageProcessor():
     def process(self):
         
         if self.message_dict['type'] == 'display_request':
-            
-            # # change display orientation
-            # if self.message_dict['orientation'] == 'v':
-            #     orientation = 'right'
-            # else:
-            #     orientation = 'normal'
-            # x = subprocess.run(['xrandr', '-o', orientation])
-
-            # connect to site
+            orientation_request = self.message_dict['orientation']
             url = self.message_dict['url']
-            print('=========================')
-            print(url)
-            print('=========================')
-            
+            response = self.play_video(url, orientation_request)
 
-            chrome_options = Options()
-            chrome_options.add_experimental_option("useAutomationExtension", False)
-            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            chrome_options.add_argument("--start-fullscreen");
-            chrome_options.add_argument("--kiosk")
-
-            driver_path = os.path.join(os.getcwd(), 'display', 'chromedriver')
-
-            driver = webdriver.Chrome(executable_path=driver_path, chrome_options=chrome_options)
-            driver.get(url)
-            
-            response = 'This worked'.encode(encoding='UTF-8')
             return response
+
+    def play_video(url, orientation):
+
+        # change display orientation
+        if orientation == 'v':
+            x = subprocess.run(['xrandr', '-o', 'right'])
+        else:
+            x = subprocess.run(['xrandr', '-o', 'normal'])
+
+        # connect to site
+        options = webdriver.ChromeOptions()
+
+        options.add_argument('--start-maximized')
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-automation")
+        options.add_argument("--start-fullscreen")
+        options.add_argument("--kiosk")
+        options.add_experimental_option("excludeSwitches" , ["enable-automation"])
+        options.add_experimental_option("excludeSwitches" , ["enable-automation","load-extension"])
+
+        driver = webdriver.Chrome(options=options) #Would like chrome to start in fullscreen
+        driver.get(url)
+
+        response = 'success'.encode(encoding='UTF-8')
+        return response
