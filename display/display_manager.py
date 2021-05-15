@@ -18,14 +18,14 @@ class CustomMessageProcessor():
             response = self.play_video(url, orientation_request)
 
             return response
+    
+    def play_video(self, url, orientation):
 
-    def play_video(url, orientation):
-
-        # change display orientation
-        if orientation == 'v':
-            x = subprocess.run(['xrandr', '-o', 'right'])
-        else:
-            x = subprocess.run(['xrandr', '-o', 'normal'])
+        # # change display orientation
+        # if orientation == 'v':
+        #     x = subprocess.run(['xrandr', '-o', 'right'])
+        # else:
+        #     x = subprocess.run(['xrandr', '-o', 'normal'])
 
         # connect to site
         options = webdriver.ChromeOptions()

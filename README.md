@@ -82,6 +82,7 @@ $ source ble-env/bin/activate
 (ble-env) $ pip3 install python-networkmanager
 (ble-env) $ sudo ble-env/bin/python3.7 main.py
 ```
+
 # DISPLAY
 # chromium drivers recommended by selenium will not work on ARM chips. Use this command to install the right ARM drivers
 sudo apt install chromium-chromedriver

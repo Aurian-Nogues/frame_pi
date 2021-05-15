@@ -20,8 +20,6 @@ def main(adapter_address):
     dev = BluFi(WiFiHandlerNetworkManager, adapter_address, DEVICE_NAME)
 
     def on_customdata(data):
-
-
         messageProcessor = CustomMessageProcessor(data)
         res = messageProcessor.process()
         dev.send_custom_data(res)

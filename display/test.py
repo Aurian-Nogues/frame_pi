@@ -2,7 +2,7 @@ import pathlib
 import os
 # from selenium.webdriver.chrome.options import Options  
 from selenium import webdriver
-
+import time
 
 url = 'https://frame-zero.herokuapp.com/player/4/0x60F80121C31A0d46B5279700f9DF786054aa5eE5/913180/h/auto/100%25/%23000000'
 
@@ -35,6 +35,9 @@ url = 'https://frame-zero.herokuapp.com/player/4/0x60F80121C31A0d46B5279700f9DF7
 
 options = webdriver.ChromeOptions()
 
+# options.add_argument('--no-sandbox')
+# options.add_argument('--disable-dev-shm-usage')
+
 options.add_argument('--start-maximized')
 options.add_argument("--disable-extensions")
 options.add_argument("--disable-automation")
@@ -42,7 +45,7 @@ options.add_argument("--start-fullscreen")
 options.add_argument("--kiosk")
 options.add_experimental_option("excludeSwitches" , ["enable-automation"])
 options.add_experimental_option("excludeSwitches" , ["enable-automation","load-extension"])
+options.add_experimental_option('useAutomationExtension', False)
 
 driver = webdriver.Chrome(options=options) #Would like chrome to start in fullscreen
 driver.get(url)
-print(b)
