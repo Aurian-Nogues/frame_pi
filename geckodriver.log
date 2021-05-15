@@ -1,0 +1,2 @@
+1621100284025	geckodriver	INFO	Listening on 127.0.0.1:58847
+Running Firefox as root in a regular user's session is not supported.  ($XAUTHORITY is /home/pi/.Xauthority which is owned by pi.)

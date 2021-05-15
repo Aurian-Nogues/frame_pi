@@ -79,12 +79,21 @@ $ source ble-env/bin/activate
 (ble-env) $ pip3 install bluezero
 (ble-env) $ pip3 install bisturi
 (ble-env) $ pip3 install uptime
+(ble-env) $ pip3 install python-networkmanager
 (ble-env) $ sudo ble-env/bin/python3.7 main.py
 ```
 # DISPLAY
 
+https://raspberrypi.stackexchange.com/questions/4941/can-i-run-selenium-webdriver-using-firefox-as-the-browser
+
 $ pip3 install selenium
 go to chromium and chrome://version/ to check version
 Download right version from:
+https://launchpad.net/ubuntu/trusty/+package/chromium-chromedriver
+Select and arm driver (as I am writing this it is https://launchpad.net/~canonical-chromium-builds/+archive/ubuntu/stage/+build/14482955)
+
+Do not use the standard drivers from
 https://sites.google.com/a/chromium.org/chromedriver/downloads
-Make sure it’s in your PATH, e. g., place it in /usr/bin or /usr/local/bin.
+They are meant to be used for Intel and AMD chips, not ARM
+
+
