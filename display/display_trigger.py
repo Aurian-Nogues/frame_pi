@@ -19,3 +19,10 @@ class DisplayTrigger():
         file = open(self.variables_file, 'wb')
         pickle.dump(variables, file)
         file.close()
+
+        response = {
+            'success':True,
+            'type':'load_url_frame',
+            'msg':'successfully loaded new url to frame'
+        }
+        return response

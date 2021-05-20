@@ -31,8 +31,9 @@ def main(adapter_address):
             #   'url': 'https://frame-zero.herokuapp.com/player/4/0x60F80121C31A0d46B5279700f9DF786054aa5eE5/913180/v/57%25/auto/%23000000'}
 
         trigger = DisplayTrigger()
-        trigger.trigger_display(url, orientation)
-        dev.send_custom_data(b'Success')
+        response = trigger.trigger_display(url, orientation)
+        response = json.dumps(response)
+        dev.send_custom_data(bytes(response, encoding='utf8'))
 
         # dev.send_custom_data(response)
         # print('CUSTOM data received', data)
