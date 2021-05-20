@@ -25,8 +25,13 @@ def main(adapter_address):
         message_dict = json.loads(decoded)
         if message_dict['type'] == 'display_request':
             url = message_dict['url']
+            orientation = message_dict['orientation']
+            # {'type': 'display_request',
+            #  'orientation': 'v',
+            #   'url': 'https://frame-zero.herokuapp.com/player/4/0x60F80121C31A0d46B5279700f9DF786054aa5eE5/913180/v/57%25/auto/%23000000'}
+
         trigger = DisplayTrigger()
-        trigger.trigger_display(url)
+        trigger.trigger_display(url, orientation)
         dev.send_custom_data(b'Success')
 
         # dev.send_custom_data(response)

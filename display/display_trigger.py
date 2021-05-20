@@ -10,10 +10,11 @@ class DisplayTrigger():
         self.display_manager = os.path.join(self.DISPLAY_DIR,'test_manager.py')
         self.variables_file = os.path.join(self.DISPLAY_DIR, 'variables')
     
-    def trigger_display(self, url):
+    def trigger_display(self, url, orientation):
         variables = {
             'wait_url': 'https://www.google.com',
-            'display_url': url
+            'display_url': url,
+            'orientation':orientation
         }
         file = open(self.variables_file, 'wb')
         pickle.dump(variables, file)
