@@ -10,19 +10,31 @@ class DisplayTrigger():
         self.display_manager = os.path.join(self.DISPLAY_DIR,'test_manager.py')
         self.variables_file = os.path.join(self.DISPLAY_DIR, 'variables')
     
-    def trigger_display(self, url, orientation):
-        variables = {
-            'wait_url': 'https://www.google.com',
-            'display_url': url,
-            'orientation':orientation
-        }
+    def trigger_display(self, display_url=None, orientation=None, wifi_connected=None):
+        # load variables
+        file = open(self.variables_file, 'rb')
+        variables = pickle.load(file)
+        file.close()
+
+        if display_url is not None:
+            variables['display_url'] = display_url
+        if orientation is not None:
+            variables['orientation'] = orientation
+        if wifi_connected is not None:
+            variables['wifi_connected'] = wifi_connected
+        
         file = open(self.variables_file, 'wb')
         pickle.dump(variables, file)
         file.close()
 
+        if display_url is not None:
+            msg = 'successfully loaded new url to frame'
+        else:
+            msg = None
+
         response = {
             'success':True,
             'type':'load_url_frame',
-            'msg':'successfully loaded new url to frame'
+            'msg':msg
         }
         return response

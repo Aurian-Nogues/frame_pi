@@ -20,18 +20,24 @@ def main(adapter_address):
     # Create peripheral
     dev = BluFi(WiFiHandlerNetworkManager, adapter_address, DEVICE_NAME)
 
+    trigger = DisplayTrigger()
+    ssid, connected = dev.wifi.GetWifiStatus()
+
+    response = trigger.trigger_display(wifi_connected=connected)
+
     def on_customdata(data):
         decoded = data.decode('utf-8')
         message_dict = json.loads(decoded)
         if message_dict['type'] == 'display_request':
-            url = message_dict['url']
-            orientation = message_dict['orientation']
             # {'type': 'display_request',
             #  'orientation': 'v',
             #   'url': 'https://frame-zero.herokuapp.com/player/4/0x60F80121C31A0d46B5279700f9DF786054aa5eE5/913180/v/57%25/auto/%23000000'}
+            url = message_dict['url']
+            orientation = message_dict['orientation']
 
         trigger = DisplayTrigger()
-        response = trigger.trigger_display(url, orientation)
+        ssid, connected = dev.wifi.GetWifiStatus()
+        response = trigger.trigger_display(display_url=url, orientation=orientation, wifi_connected=connected)
         response = json.dumps(response)
         dev.send_custom_data(bytes(response, encoding='utf8'))
 
