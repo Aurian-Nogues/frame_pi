@@ -10,11 +10,11 @@ import subprocess
 # initialize selenium
 
 options = webdriver.ChromeOptions()
-# options.add_argument('--start-maximized')
+options.add_argument('--start-maximized')
 options.add_argument("--disable-extensions")
 options.add_argument("--disable-automation")
-# options.add_argument("--start-fullscreen")
-# options.add_argument("--kiosk")
+options.add_argument("--start-fullscreen")
+options.add_argument("--kiosk")
 options.add_argument("--hide-scrollbars")
 options.add_experimental_option("excludeSwitches" , ["enable-automation"])
 options.add_experimental_option("excludeSwitches" , ["enable-automation","load-extension"])

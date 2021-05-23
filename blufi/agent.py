@@ -125,18 +125,22 @@ class AgentNoDisplayNoKeyboard(Agent):
 class AgentDisplayOnly(dbus.service.Object):
     CAPABILITY = 'DisplayOnly'
 
-    @dbus.service.method(AGENT_INTERFACE, in_signature="ou", out_signature="")
-    def RequestConfirmation(self, device, passkey):
-        self.on_passkey(passkey)
-        set_trusted(device)
+    # @dbus.service.method(AGENT_INTERFACE, in_signature="ou", out_signature="")
+    # def RequestConfirmation(self, device, passkey):
+    #     self.on_passkey(passkey)
+    #     set_trusted(device)
 
-    @dbus.service.method(AGENT_INTERFACE, in_signature="ouq", out_signature="")
-    def DisplayPasskey(self, device, passkey, entered):
-        self.on_passkey(passkey)
+    # @dbus.service.method(AGENT_INTERFACE, in_signature="ouq", out_signature="")
+    # def DisplayPasskey(self, device, passkey, entered):
+    #     self.on_passkey(passkey)
 
-    @dbus.service.method(AGENT_INTERFACE, in_signature="os", out_signature="")
-    def DisplayPinCode(self, device, pincode):
-        self.on_passkey(pincode)
+    # @dbus.service.method(AGENT_INTERFACE, in_signature="os", out_signature="")
+    # def DisplayPinCode(self, device, pincode):
+    #     self.on_passkey(pincode)
 
-    def on_passkey(self, passkey):
-        print("DisplayPasskey (%s, %06u entered %u)" % (device, passkey, entered))        
+    # def on_passkey(self, passkey):
+    #     print("DisplayPasskey (%s, %06u entered %u)" % (device, passkey, entered))        
+    @dbus.service.method(AGENT_INTERFACE, in_signature="o", out_signature="")
+    def RequestAuthorization(self, device):
+        print("RequestAuthorization (%s)" % (device))
+        return

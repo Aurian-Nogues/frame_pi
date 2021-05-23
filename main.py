@@ -28,6 +28,14 @@ def main(adapter_address):
     def on_customdata(data):
         decoded = data.decode('utf-8')
         message_dict = json.loads(decoded)
+        
+        # wifi update message
+        if message_dict['type'] == 'wifi_update':
+            connected = message_dict['connected']
+            trigger = DisplayTrigger()
+            response = trigger.trigger_display(wifi_connected=connected)
+
+        # display request message
         if message_dict['type'] == 'display_request':
             # {'type': 'display_request',
             #  'orientation': 'v',
@@ -35,15 +43,11 @@ def main(adapter_address):
             url = message_dict['url']
             orientation = message_dict['orientation']
 
-        trigger = DisplayTrigger()
-        ssid, connected = dev.wifi.GetWifiStatus()
-        response = trigger.trigger_display(display_url=url, orientation=orientation, wifi_connected=connected)
-        response = json.dumps(response)
-        dev.send_custom_data(bytes(response, encoding='utf8'))
-
-        # dev.send_custom_data(response)
-        # print('CUSTOM data received', data)
-        # dev.send_custom_data(b'xyz')
+            trigger = DisplayTrigger()
+            ssid, connected = dev.wifi.GetWifiStatus()
+            response = trigger.trigger_display(display_url=url, orientation=orientation, wifi_connected=connected)
+            response = json.dumps(response)
+            dev.send_custom_data(bytes(response, encoding='utf8'))
 
     dev.on_customdata = on_customdata
     # Publish peripheral and start event loop
