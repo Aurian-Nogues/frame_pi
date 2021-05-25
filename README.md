@@ -88,3 +88,33 @@ $ source ble-env/bin/activate
 sudo apt install chromium-chromedriver
 $ pip3 install selenium
 
+
+
+# setup boot options for kiosk
+
+https://itnext.io/raspberry-pi-read-only-kiosk-mode-the-complete-tutorial-for-2021-58a860474215
+
+install prerequisites using 
+sudo apt-get install --no-install-recommends xserver-xorg x11-xserver-utils xinit openbox
+
+edit autostart file using sudo nano /etc/xdg/openbox/autostart, insert those lines:
+# Disable any form of screen saver / screen blanking / power management
+xset s off
+xset s noblank
+xset -dpms
+
+## disable starting rainbow using\
+sudo nano /boot/config.txt: add line disable_splash=1
+disable booting information using
+sudo nano /boot/cmdline.txt: add at the end of first line silent quiet splash loglevel=0 logo.nologo vt.global_cursor_default=0, replace console=tty1 with console=tty3
+disable booting autologin terminal information:
+run touch ~/.hushlogin,
+run sudo nano /etc/systemd/system/getty@tty1.service.d/autologin.conf and replace line ExecStart=-/sbin/agetty --autologin pi --noclear %I xterm-256color with ExecStart=-/sbin/agetty --skip-login --noclear --noissue --login-options "-f pi" %I $TERM
+
+
+
+
+# make pi read only
+sudo dphys-swapfile swapoff
+sudo dphys-swapfile uninstall
+sudo update-rc.d dphys-swapfile remove
