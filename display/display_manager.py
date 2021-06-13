@@ -29,6 +29,7 @@ variables_path = os.path.join(DISPLAY_DIR, 'variables')
 wait_page_path = os.path.join(PAGES_DIR, 'waiting_page.html')
 no_wifi_url = os.path.join(PAGES_DIR, 'no_wifi.html')
 
+
 def trigger_display(driver, latest_variables):
     file = open(variables_path, 'rb')
     variables = pickle.load(file)
@@ -60,7 +61,6 @@ def trigger_display(driver, latest_variables):
             driver.get(active_url)
         except WebDriverException:
             driver.get(no_wifi_url)
-    
     return latest_variables
 
 
