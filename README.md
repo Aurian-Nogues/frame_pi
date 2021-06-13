@@ -103,15 +103,39 @@ xset s off
 xset s noblank
 xset -dpms
 
-## disable starting rainbow using\
-sudo nano /boot/config.txt: add line disable_splash=1
-disable booting information using
-sudo nano /boot/cmdline.txt: add at the end of first line silent quiet splash loglevel=0 logo.nologo vt.global_cursor_default=0, replace console=tty1 with console=tty3
-disable booting autologin terminal information:
-run touch ~/.hushlogin,
-run sudo nano /etc/systemd/system/getty@tty1.service.d/autologin.conf and replace line ExecStart=-/sbin/agetty --autologin pi --noclear %I xterm-256color with ExecStart=-/sbin/agetty --skip-login --noclear --noissue --login-options "-f pi" %I $TERM
+## disable starting logs and add boot video
+https://florianmuller.com/polish-your-raspberry-pi-clean-boot-splash-screen-video-noconsole-zram
+
+### disable graphical outputs on boot
+disable raibow screen :
+go to
+sudo nano /boot/config.txt
+add the last line at very end
+disable_splash=1
+
+### change output of pi console
+sudo nano /boot/cmdline.txt
+
+In this file you will finde a string of parameters all in line 1. Its important that you add the following exactly at the end of the existing line 1, starting with a space between the exisitng and new. So lets add:
+
+consoleblank=1 logo.nologo quiet loglevel=0 plymouth.enable=0 vt.global_cursor_default=0 plymouth.ignore-serial-consoles splash fastboot noatime nodiratime noram
+
+### boot with video or splash screen
+sudo apt-get update
+sudo apt-get install omxplayer
+
+Next we tell the pi in the rc.local to play our video on boot:
+sudo nano /etc/rc.local
+
+In rc.local add before the end where it says exit 0 these two lines. Don‘t forget to replace my path to the video with yours. You can use all kind of formats, avi, mp4 and more should all work fine as well.
+
+dmesg --console-off
+omxplayer /home/pi/myvideo.mp4 &
 
 
+### finish
+sudo reboot
+that should be a clean boot
 
 
 # make pi read only
