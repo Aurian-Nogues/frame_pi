@@ -22,7 +22,8 @@ options.add_experimental_option("excludeSwitches" , ["enable-automation"])
 options.add_experimental_option("excludeSwitches" , ["enable-automation","load-extension"])
 options.add_experimental_option('useAutomationExtension', False)
 
-BASE_DIR = os.getcwd()
+#BASE_DIR = os.getcwd()
+BASE_DIR =  "/home/pi/frame_pi"
 DISPLAY_DIR = os.path.join(BASE_DIR, 'display')
 PAGES_DIR = os.path.join(BASE_DIR, 'display', 'pages')
 variables_path = os.path.join(DISPLAY_DIR, 'variables')

@@ -138,7 +138,35 @@ sudo reboot
 that should be a clean boot
 
 
+### 
+hide mouse
+sudo apt install unclutter 
+add unclutter -idle 0 & at beginning of bash script
+
+
+# start scripts before desktop starts
+take mainPrgrm.service file
+copy to /etc/systemd/system
+
+sudo systemctl enable mainPrgm
+sudo systemctl start mainPrgm
+
+for lxsession:
+
+sudo nano sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+add at the end:
+@lxterminal -e "/home/pi/frame_pi/execute.sh"
+
+then:
+chmod 644 all scripts and files to execute
+
+
 # make pi read only
 sudo dphys-swapfile swapoff
 sudo dphys-swapfile uninstall
 sudo update-rc.d dphys-swapfile remove
+
+# shut down scripts on boot after autostart
+
+ps -ef | grep python
+sudo kill 9 <script number>

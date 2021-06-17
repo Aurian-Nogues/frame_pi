@@ -5,7 +5,8 @@ import pickle
 class DisplayTrigger():
 
     def __init__(self):
-        self.BASE_DIR = os.getcwd()
+        # self.BASE_DIR = os.getcwd()
+        self.BASE_DIR =  "/home/pi/frame_pi"
         self.DISPLAY_DIR = os.path.join(self.BASE_DIR, 'display')
         self.display_manager = os.path.join(self.DISPLAY_DIR,'test_manager.py')
         self.variables_file = os.path.join(self.DISPLAY_DIR, 'variables')
@@ -27,7 +28,7 @@ class DisplayTrigger():
         pickle.dump(variables, file)
         file.close()
 
-        if display_url is not None:
+        if display_url is not None: 
             msg = 'successfully loaded new url to frame'
         else:
             msg = None
