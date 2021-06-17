@@ -30,12 +30,39 @@ variables_path = os.path.join(DISPLAY_DIR, 'variables')
 wait_page_path = os.path.join(PAGES_DIR, 'waiting_page.html')
 no_wifi_url = os.path.join(PAGES_DIR, 'no_wifi.html')
 
+WIFI_CONNECTION_TRIES = 10
+
+import socket
+
+def isConnected():
+
+    try:
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        sock = socket.create_connection(("www.google.com", 80))
+        if sock is not None:
+            sock.close
+            WIFI_CONNECTION_TRIES = 0
+        return True
+    except OSError:
+        WIFI_CONNECTION_TRIES = WIFI_CONNECTION_TRIES -1
+    return False
+
 
 def trigger_display(driver, latest_variables):
     file = open(variables_path, 'rb')
     variables = pickle.load(file)
     file.close()
 
+    if variables['wifi_connected'] == False:
+        if WIFI_CONNECTION_TRIES > 0:
+            connected = isConnected()
+            # the frame connected, update values
+            variables['wifi_connected'] = connected
+            file = open(variables_path, 'wb')
+            pickle.dump(variables, file)
+            file.close()
+        
     if variables != latest_variables:
         latest_variables = variables
 
@@ -66,17 +93,21 @@ def trigger_display(driver, latest_variables):
 
 
 def main():
+
     if os.path.isfile(variables_path) == False:
-        
+
+        connected = isConnected()
         # create default variables file
+        # /!\/!\ Do not use that for startup run. This will work in dev but when in prod the script needs a variables file at start or it will crash /!\/!\
         print('Variables file does not exit, creating it')
         variables = {
             'wait_url': 'file://' + wait_page_path, # need this prefix when loading from local drive
             'no_wifi_url' : 'file://' + no_wifi_url,
-            'wifi_connected' : False,
+            'wifi_connected' : connected,
             'display_url': None,
             'orientation':'h'
         }
+
         file = open(variables_path, 'wb')
         pickle.dump(variables, file)
         file.close()
@@ -87,6 +118,7 @@ def main():
     while True:
         time.sleep(1)
         latest_variables = trigger_display(driver=driver, latest_variables=latest_variables)
+        print
 
 if __name__ == '__main__':
     main()
