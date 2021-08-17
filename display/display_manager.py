@@ -30,11 +30,9 @@ variables_path = os.path.join(DISPLAY_DIR, 'variables')
 wait_page_path = os.path.join(PAGES_DIR, 'waiting_page.html')
 no_wifi_url = os.path.join(PAGES_DIR, 'no_wifi.html')
 
-WIFI_CONNECTION_TRIES = 10
-
 import socket
 
-def isConnected():
+def isConnected(wifi_connection_tries):
 
     try:
         # connect to the host -- tells us if the host is actually
@@ -42,21 +40,21 @@ def isConnected():
         sock = socket.create_connection(("www.google.com", 80))
         if sock is not None:
             sock.close
-            WIFI_CONNECTION_TRIES = 0
-        return True
+            wifi_connection_tries = 0
+        return True, wifi_connection_tries
     except OSError:
-        WIFI_CONNECTION_TRIES = WIFI_CONNECTION_TRIES -1
-    return False
+        wifi_connection_tries -= 1
+        return False, wifi_connection_tries
 
 
-def trigger_display(driver, latest_variables):
+def trigger_display(driver, latest_variables, wifi_connection_tries):
     file = open(variables_path, 'rb')
     variables = pickle.load(file)
     file.close()
 
     if variables['wifi_connected'] == False:
-        if WIFI_CONNECTION_TRIES > 0:
-            connected = isConnected()
+        if wifi_connection_tries > 0:
+            connected, wifi_connection_tries = isConnected(wifi_connection_tries)
             # the frame connected, update values
             variables['wifi_connected'] = connected
             file = open(variables_path, 'wb')
@@ -76,9 +74,9 @@ def trigger_display(driver, latest_variables):
             active_url = no_wifi_url
         else:
             if display_url is None:
-                active_url = variables['wait_url']
+                active_url = wait_url
             else:
-                active_url = variables['display_url']
+                active_url = display_url
 
         if orientation == 'h':
             x = subprocess.run(['xrandr', '-o', 'normal'])
@@ -89,14 +87,16 @@ def trigger_display(driver, latest_variables):
             driver.get(active_url)
         except WebDriverException:
             driver.get(no_wifi_url)
-    return latest_variables
+    return latest_variables, wifi_connection_tries
 
 
 def main():
 
-    if os.path.isfile(variables_path) == False:
+    wifi_connection_tries = 5
 
-        connected = isConnected()
+    if os.path.isfile(variables_path) == False:
+        
+        connected, wifi_connection_tries = isConnected(wifi_connection_tries)
         # create default variables file
         # /!\/!\ Do not use that for startup run. This will work in dev but when in prod the script needs a variables file at start or it will crash /!\/!\
         print('Variables file does not exit, creating it')
@@ -113,12 +113,15 @@ def main():
         file.close()
 
     driver = webdriver.Chrome(options=options)
-    latest_variables = trigger_display(driver=driver, latest_variables=None)
+    latest_variables, wifi_connection_tries = trigger_display(driver=driver,
+         latest_variables=None,
+         wifi_connection_tries=wifi_connection_tries)
 
     while True:
         time.sleep(1)
-        latest_variables = trigger_display(driver=driver, latest_variables=latest_variables)
-        print
+        latest_variables, wifi_connection_tries = trigger_display(driver=driver,
+         latest_variables=latest_variables,
+          wifi_connection_tries=wifi_connection_tries)
 
 if __name__ == '__main__':
     main()
