@@ -40,6 +40,15 @@ def main(adapter_address):
             trigger = DisplayTrigger()
             response = trigger.trigger_display(wifi_connected=connected)
 
+        # get frame name
+        if message_dict['type'] == 'frame_name_request':
+            response = {
+                'type':'frame_name_request',
+                'device_name': DEVICE_NAME
+            }
+            response = json.dumps(response)
+            dev.send_custom_data(bytes(response, encoding='utf8'))
+
         # display request message
         if message_dict['type'] == 'display_request':
             # {'type': 'display_request',
