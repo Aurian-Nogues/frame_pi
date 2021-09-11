@@ -10,12 +10,8 @@ from frame_utilities import load_frame_variables
 
 from display.display_trigger import DisplayTrigger
 
-# test
-print('calling function')
 frame_variables = load_frame_variables()
-print(frame_variables)
 frame_name = frame_variables['frame_name']
-print(frame_name)
 
 
 DEVICE_NAME = frame_name
