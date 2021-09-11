@@ -5,11 +5,20 @@ from blufi import BluFi, AbstractWiFiHandler
 from blufi.agent import AgentDisplayOnly, Agent, AgentNoDisplayNoKeyboard, install_agent
 from wifinm import WiFiHandlerNetworkManager
 import json
+from frame_utilities import load_frame_variables
+
 
 from display.display_trigger import DisplayTrigger
 
 # test
-DEVICE_NAME = "BLUFI_DEVICE"
+print('calling function')
+frame_variables = load_frame_variables()
+print(frame_variables)
+frame_name = frame_variables['frame_name']
+print(frame_name)
+
+
+DEVICE_NAME = frame_name
 PAIRING_ENABLED = False #supported reliably only by iOS devices
 
 def main(adapter_address):
