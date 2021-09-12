@@ -170,3 +170,4 @@ sudo update-rc.d dphys-swapfile remove
 
 ps -ef | grep python
 sudo kill 9 <script number>
+

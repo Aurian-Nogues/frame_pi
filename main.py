@@ -6,7 +6,7 @@ from blufi.agent import AgentDisplayOnly, Agent, AgentNoDisplayNoKeyboard, insta
 from wifinm import WiFiHandlerNetworkManager
 import json
 from frame_utilities import load_frame_variables
-
+from subprocess import call
 
 from display.display_trigger import DisplayTrigger
 
@@ -62,6 +62,10 @@ def main(adapter_address):
             response = trigger.trigger_display(display_url=url, orientation=orientation, wifi_connected=connected)
             response = json.dumps(response)
             dev.send_custom_data(bytes(response, encoding='utf8'))
+
+        # poweroff request message
+        if message_dict['type'] == 'poweroff_request':
+            call("sudo shutdown --poweroff now", shell=True)
 
     dev.on_customdata = on_customdata
     # Publish peripheral and start event loop
